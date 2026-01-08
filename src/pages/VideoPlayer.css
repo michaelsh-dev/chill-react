@@ -1,0 +1,265 @@
+.vpPage{ background:#0b0f10; min-height:100vh; display:grid; place-items:center; padding:24px; }
+.vpStage{
+  width:min(1180px, 96vw);
+  aspect-ratio: 16/9;
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  background:#111;
+  background-size:cover;
+  background-position:center;
+}
+.vpShade{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.65)); }
+
+.vpCenterBtn{
+  position:absolute; inset:0; margin:auto;
+  width:72px; height:72px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.45);
+  color:#fff; font-size:26px;
+  display:grid; place-items:center;
+  cursor:pointer;
+}
+
+.vpCaption{
+  position:absolute; left:50%; transform:translateX(-50%);
+  bottom:70px;
+  background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.15);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:12px;
+  font-size:12px;
+}
+
+.vpBar{
+  position:absolute; left:0; right:0; bottom:0;
+  padding:16px 16px 14px;
+  display:flex; align-items:flex-end; justify-content:space-between;
+  gap:16px;
+  background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55));
+}
+
+.vpLeft{ display:flex; align-items:center; gap:10px; min-width:0; }
+.vpRight{ display:flex; align-items:center; gap:10px; }
+
+.vpIcon{
+  width:38px; height:38px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.35);
+  color:#fff;
+  cursor:pointer;
+  display:grid; place-items:center;
+}
+.vpIcon.isOn{ border-color: rgba(120,170,255,.55); }
+
+.vpNow{ display:flex; flex-direction:column; gap:2px; min-width:0; margin-left:6px; }
+.vpNowTitle{ color:rgba(255,255,255,.9); font-weight:700; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.vpNowEp{ color:rgba(255,255,255,.65); font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.vpPopWrap{ position:relative; }
+.vpPop{
+  position:absolute; right:0; bottom:46px;
+  width:220px;
+  background:rgba(20,23,28,.92);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  padding:10px;
+  backdrop-filter: blur(10px);
+}
+.vpPopTitle{ color:#fff; font-weight:700; font-size:12px; margin-bottom:8px; }
+.vpPopItem{
+  width:100%;
+  display:flex; justify-content:space-between; align-items:center;
+  border:0; background:transparent;
+  color:rgba(255,255,255,.85);
+  padding:10px 10px;
+  border-radius:10px;
+  cursor:pointer;
+  font-size:12px;
+}
+.vpPopItem:hover{ background:rgba(255,255,255,.08); }
+.vpPopItem.isActive{ background:rgba(120,170,255,.18); }
+.vpPopHr{ height:1px; background:rgba(255,255,255,.10); margin:8px 0; }
+
+.vpNextCard{
+  position:absolute; left:16px; bottom:86px;
+  width:360px;
+  background:rgba(20,23,28,.92);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  overflow:hidden;
+  backdrop-filter: blur(10px);
+}
+.vpNextTop{ display:flex; align-items:center; justify-content:space-between; padding:10px 12px; }
+.vpNextLabel{ color:#fff; font-weight:700; font-size:12px; }
+.vpX{ width:34px; height:34px; border-radius:10px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.25); color:#fff; cursor:pointer; }
+.vpNextBtn{ width:100%; border:0; background:transparent; cursor:pointer; display:flex; gap:12px; padding:12px; text-align:left; }
+.vpNextThumb{ width:92px; height:54px; object-fit:cover; border-radius:10px; }
+.vpNextTitle{ color:#fff; font-weight:700; font-size:12px; margin-bottom:6px; }
+.vpNextDesc{
+  color:rgba(255,255,255,.7);
+  font-size:11px;
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.vpDrawer{
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.55);
+  display:flex; justify-content:flex-end;
+}
+.vpDrawerPanel{
+  width:min(520px, 92vw);
+  height:100%;
+  background:rgba(15,18,22,.96);
+  border-left:1px solid rgba(255,255,255,.10);
+  padding:16px;
+}
+.vpDrawerHead{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.vpBack{ width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.14); background:rgba(0,0,0,.25); color:#fff; cursor:pointer; }
+.vpDrawerTitle{ color:#fff; font-weight:800; }
+.vpDrawerList{ display:flex; flex-direction:column; gap:10px; overflow:auto; height:calc(100% - 60px); padding-right:6px; }
+.vpDrawerItem{
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.04);
+  border-radius:14px;
+  padding:12px;
+  color:#fff;
+  cursor:pointer;
+  text-align:left;
+  display:flex; gap:12px;
+}
+.vpDrawerItem.isActive{ border-color: rgba(120,170,255,.55); background:rgba(120,170,255,.10); }
+.vpDrawerNo{ color:rgba(255,255,255,.55); font-weight:700; min-width:90px; }
+.vpDrawerItemTitle{ font-weight:800; margin-bottom:6px; }
+.vpDrawerItemDesc{ color:rgba(255,255,255,.65); font-size:12px; }
+
+.vpSkipIntro{
+  position:absolute; right:18px; bottom:78px;
+  border:0;
+  background:rgba(255,255,255,.9);
+  color:#111;
+  padding:10px 14px;
+  border-radius:999px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.vpPremium{
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.65);
+  display:grid; place-items:center;
+  padding:16px;
+}
+.vpPremiumCard{
+  width:min(820px, 92vw);
+  background:rgba(15,18,22,.95);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;
+  padding:26px;
+  text-align:center;
+  backdrop-filter: blur(12px);
+}
+.vpPremiumTitle{ color:#fff; font-weight:900; font-size:24px; }
+.vpPremiumSub{ color:rgba(255,255,255,.7); margin-top:8px; }
+.vpPremiumWhy{ color:#fff; font-weight:800; margin:18px 0 12px; }
+.vpPremiumGrid{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px; }
+.vpPItem{ border:1px solid rgba(255,255,255,.10); background:rgba(255,255,255,.04); border-radius:14px; padding:14px; }
+.vpPIcon{ font-weight:900; color:#fff; opacity:.9; margin-bottom:8px; }
+.vpPText{ color:rgba(255,255,255,.75); font-size:12px; }
+.vpPremiumBtn{
+  margin-top:18px;
+  border:0;
+  background:#2F6BFF;
+  color:#fff;
+  padding:12px 18px;
+  border-radius:999px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.vpClickCatcher{
+  position:fixed; inset:0;
+  background:transparent;
+  border:0;
+}
+@media (max-width:720px){
+  .vpPremiumGrid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+}
+
+/* jangan bikin tombol "nempel" setelah diklik */
+.vpCtlBtn:focus { outline: none; box-shadow: none; }
+.vpCtlBtn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.25);
+}
+
+/* pastiin tampilan active hanya dari class isActive */
+.vpCtlBtn.isActive{
+  background: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.28);
+}
+.vpVol { position: relative; display: inline-flex; align-items: center; }
+
+.vpVolPop{
+  position: absolute;
+  bottom: 46px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;                 /* ✅ normal, ga gede */
+  padding: 10px 10px 8px;
+  border-radius: 12px;
+  background: rgba(20,20,20,.85);
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(10px);
+}
+
+.vpVolRange{
+  width: 100%;
+  height: 4px;
+  accent-color: white;
+}
+
+.vpVolNum{
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,.75);
+  text-align: center;
+}
+
+/* biar tombol icon (termasuk CC) ga keliatan "nempel" setelah diklik */
+.vpIcon:focus { outline: none; box-shadow: none; }
+.vpIcon:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(255,255,255,.25); }
+
+.vpClose{
+  position:absolute;
+  top:14px;
+  right:14px;
+  width:38px;
+  height:38px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(0,0,0,.45);
+  color:#fff;
+  font-size:18px;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  z-index:5;
+}
+
+.vpClose:hover{
+  background:rgba(255,255,255,.15);
+}
+.nextEpisode,
+.episodeNext,
+.vpNextEpisode,
+.playerNextEpisode {
+  left: auto !important;
+  right: 24px !important;
+  bottom: 110px !important;   /* biar sejajar area kontrol */
+  top: auto !important;
+}

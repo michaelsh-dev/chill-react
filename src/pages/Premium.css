@@ -1,0 +1,260 @@
+/* page */
+.prPage { min-height:100vh; background:#0b0f10; color:#fff; }
+.prMain { width:min(1180px, 92vw); margin:0 auto; padding: 22px 0 40px; }
+
+.prWhyTitle{ text-align:center; font-weight:900; font-size:18px; margin: 24px 0 18px; }
+.prWhyGrid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
+.prWhyItem{ text-align:center; padding:14px 10px; border-radius:14px; border:1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.02); }
+.prWhyIcon{ font-size:22px; margin-bottom:8px; opacity:.9; }
+.prWhyText{ font-size:12px; color: rgba(255,255,255,.75); }
+
+.prPick{ margin-top: 22px; }
+.prPickHead{ text-align:center; margin-bottom: 14px; }
+.prPickTitle{ font-size:22px; font-weight:900; }
+.prPickSub{ font-size:12px; color: rgba(255,255,255,.65); margin-top:6px; }
+
+.prCards{
+  margin-top: 16px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:18px;
+  padding: 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.02);
+}
+
+/* CARD BASE: hitam polos */
+.prCard{
+  text-align:left;
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  padding: 18px;
+  cursor:pointer;
+  position: relative;
+  transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.prCards.hasActive .prCard:not(.isActive){
+  filter: brightness(.85);
+}
+
+.prCardTop{ margin-bottom: 14px; }
+.prCardName{ font-weight: 900; font-size: 18px; }
+.prCardSub{ margin-top: 6px; font-size: 12px; color: rgba(255,255,255,.75); }
+
+.prCardList{ list-style:none; padding:0; margin: 10px 0 0; display:flex; flex-direction:column; gap:10px; }
+.prCardList li{ display:flex; align-items:center; gap:10px; font-size: 13px; }
+.prCheck{
+  width:22px; height:22px; border-radius:999px;
+  display:grid; place-items:center;
+  background: rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.10);
+  font-weight:900;
+}
+
+/* ✅ “POPUP MAJU + BIRU” saat dipilih */
+.prCard.isActive{
+  background: linear-gradient(180deg, rgba(47,107,255,.85), rgba(13,28,66,.85));
+  border-color: rgba(47,107,255,.65);
+  box-shadow: 0 18px 60px rgba(0,0,0,.55), 0 0 0 1px rgba(47,107,255,.25) inset;
+  transform: scale(1.06) translateY(-6px);
+  z-index: 5;
+}
+
+.prCardBtn{
+  margin-top: 18px;
+  width: 100%;
+  background: rgba(255,255,255,.92);
+  color:#111;
+  border-radius: 999px;
+  padding: 12px 14px;
+  font-weight: 900;
+  text-align:center;
+  user-select:none;
+}
+
+.prCardFoot{
+  margin-top: 12px;
+  font-size: 12px;
+  text-align:center;
+  color: rgba(255,255,255,.65);
+}
+
+/* STEP 2 layout */
+.prSectionTitleRow{ display:flex; justify-content:space-between; align-items:center; margin: 24px 0 18px; }
+.prH1{ font-size: 22px; font-weight: 900; margin:0; }
+.prBack{
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  color:#fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor:pointer;
+}
+
+.prPayGrid{ display:grid; grid-template-columns: 320px 1fr; gap: 18px; align-items:start; }
+
+.prPackMini{
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(13,28,66,.9), rgba(13,28,66,.55));
+  padding: 18px;
+}
+.prPackMiniName{ font-weight: 900; }
+.prPackMiniSub{ margin-top: 6px; font-size: 12px; color: rgba(255,255,255,.8); }
+.prPackMiniList{ list-style:none; padding:0; margin: 14px 0 0; display:flex; flex-direction:column; gap:10px; }
+.prPackMiniList li{ display:flex; gap:10px; align-items:center; font-size: 12px; }
+.prPackMiniBtn{
+  margin-top: 16px;
+  width: 100%;
+  border:0;
+  background: rgba(255,255,255,.92);
+  color:#111;
+  padding: 12px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor:pointer;
+}
+.prMiniFoot{ margin-top: 10px; font-size: 11px; text-align:center; color: rgba(255,255,255,.65); }
+
+.prPayCard{
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  padding: 18px;
+}
+
+.prPayLabel{ font-size: 13px; font-weight: 900; margin-bottom: 10px; }
+
+/* === FIX WARNA TEKS CARD PAKET === */
+.prCard {
+  color: #fff; /* semua teks default putih */
+}
+
+.prCard * {
+  color: inherit;
+}
+/* Tombol Langganan di card */
+.prCardBtn {
+  background: #ffffff;
+  color: #000000; /* ⬅ teks jadi hitam */
+  font-weight: 600;
+}
+
+.prTabs{ display:flex; gap:12px; margin-bottom: 12px; }
+.prTab{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  justify-content:flex-start;
+  border-radius: 10px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  color:#fff;
+  padding: 10px 12px;
+  cursor:pointer;
+}
+.prTab.isOn{
+  border-color: rgba(47,107,255,.7);
+  box-shadow: 0 0 0 1px rgba(47,107,255,.25) inset;
+}
+
+.prTabLogos{ display:flex; gap:8px; align-items:center; }
+.prPayLogo{
+  width: 22px;
+  height: 14px;
+  object-fit: contain;
+  border-radius: 4px;
+  background: rgba(255,255,255,.08);
+  padding: 2px;
+}
+
+.prVoucherRow{ display:flex; gap:10px; align-items:center; }
+.prInput{
+  flex:1;
+  border-radius: 12px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.25);
+  color:#fff;
+  padding: 12px 12px;
+  outline:none;
+}
+.prGhostBtn{
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  color:#fff;
+  padding: 10px 14px;
+  cursor:pointer;
+  font-weight: 800;
+}
+
+.prSum{ margin-top: 16px; }
+.prSumRows{ margin-top: 10px; border-top:1px solid rgba(255,255,255,.08); padding-top: 12px; }
+.prSumRow{ display:flex; justify-content:space-between; padding: 8px 0; font-size: 13px; color: rgba(255,255,255,.85); }
+.prSumTotal{ margin-top: 6px; border-top:1px solid rgba(255,255,255,.08); padding-top: 12px; font-weight: 900; }
+
+.prPayBtn{
+  margin-top: 14px;
+  border:0;
+  background:#2F6BFF;
+  color:#fff;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 900;
+  cursor:pointer;
+}
+
+/* timer bar step 3 */
+.prTimerBar{
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+}
+.prTimerTitle{ color: rgba(255,255,255,.8); font-weight: 700; font-size: 12px; }
+.prTimerBoxes{ display:flex; gap:10px; }
+.prTimeBox{
+  border-radius: 10px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.25);
+  padding: 8px 10px;
+  min-width: 70px;
+  text-align:center;
+}
+.prTimeNum{ font-weight: 900; font-size: 14px; }
+.prTimeLbl{ font-size: 11px; color: rgba(255,255,255,.65); }
+
+/* howto */
+.prMethodLine{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding: 10px 0; }
+.prRadioDot{ width:10px; height:10px; border-radius:999px; background: rgba(255,255,255,.25); }
+.prRadioDot.isOn{ background: #2F6BFF; box-shadow: 0 0 0 4px rgba(47,107,255,.18); }
+.prMethodText{ font-weight: 800; }
+.prMethodRight{ color: rgba(255,255,255,.65); font-size: 12px; }
+
+.prHowtoBox{ margin-top: 14px; border-top: 1px solid rgba(255,255,255,.08); padding-top: 12px; }
+.prSteps{ margin: 10px 0 0; color: rgba(255,255,255,.82); font-size: 13px; line-height: 1.5; }
+
+.prFooter{ margin-top: 28px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.08); display:flex; justify-content:space-between; gap: 18px; flex-wrap: wrap; }
+.prFooterLeft{ display:flex; align-items:center; gap:12px; }
+.prFooterLogo{ height: 20px; }
+.prFooterCopy{ color: rgba(255,255,255,.55); font-size: 12px; }
+.prFooterCols{ display:flex; gap: 34px; }
+.prColTitle{ font-weight: 900; font-size: 12px; margin-bottom: 10px; }
+.prColLinks{ display:flex; flex-direction:column; gap:8px; }
+.prColLinks a{ color: rgba(255,255,255,.55); font-size: 12px; }
+.prColLinks a:hover{ color:#fff; }
+
+@media (max-width: 980px){
+  .prWhyGrid{ grid-template-columns: 1fr 1fr; }
+  .prCards{ grid-template-columns: 1fr; }
+  .prPayGrid{ grid-template-columns: 1fr; }
+}

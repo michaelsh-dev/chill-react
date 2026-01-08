@@ -1,0 +1,1139 @@
+/* ===== RESET GLOBAL ===== */
+*{ box-sizing:border-box; }
+html,body,#root{ height:100%; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background:#0b0f10;
+  color:#fff;
+}
+a{ color: inherit; text-decoration:none; }
+button{ font-family: inherit; }
+img{ max-width:100%; display:block; }
+/* ================= AUTH (LOGIN/REGISTER) ================= */
+
+/* halaman */
+.page{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  position:relative;
+  padding:24px;
+
+  /* ✅ pisah properti biar gak gagal total kalau --bg kosong */
+  background-color: #0b0f10;
+  background-image: var(--bg, none);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+
+.overlay{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.30);
+}
+
+/* card */
+.card{
+  position:relative;
+  width:min(440px, 92vw);
+  padding:28px 26px;
+  border-radius:16px;
+
+  background: rgba(25, 29, 33, .68);
+  border: 1px solid rgba(255,255,255,.10);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.brand{
+  display:flex;
+  justify-content:center;
+  margin-bottom:14px;
+}
+.brand__logo{
+  width:140px;
+  height:auto;
+}
+
+.title{
+  margin: 6px 0 4px;
+  text-align:center;
+  font-size:24px;
+  font-weight:700;
+}
+.subtitle{
+  margin:0 0 18px;
+  text-align:center;
+  color: rgba(255,255,255,.70);
+  font-size:12px;
+}
+
+.form{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.field{ display:flex; flex-direction:column; gap:6px; }
+.label{ font-size:12px; color: rgba(255,255,255,.85); }
+
+.input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.22);
+  color:#fff;
+  outline:none;
+}
+.input::placeholder{ color: rgba(255,255,255,.35); }
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:11px;
+}
+
+.link{
+  color: rgba(255,255,255,.65);
+}
+.link:hover{ color:#fff; text-decoration:underline; }
+
+.btnPrimary{
+  margin-top:6px;
+  border:0;
+  padding:12px 14px;
+  border-radius:999px;
+  background: rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.divider{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:8px 0 2px;
+}
+.divider span{ font-size:11px; color: rgba(255,255,255,.55); }
+
+.btnGhost{
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  color:#fff;
+  padding:12px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+.gIcon{ width:16px; height:16px; }
+
+.pwToggle{
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(255,255,255,.65);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.pwToggle input[type="checkbox"]{
+  accent-color: rgba(255,255,255,.65);
+}
+
+/* ================= HOME PAGE ================= */
+.home{ background:#0b0f10; min-height:100vh; color:#fff; }
+
+/* NAVBAR */
+.nav{
+  position:sticky; top:0; z-index:20;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 22px;
+  background:rgba(0,0,0,.6);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.navLogo{ height:22px; }
+.navLink{
+  font-size:13px;
+  color:rgba(255,255,255,.7);
+}
+.navLink:hover{ color:#fff; }
+.avatarBtn{
+  background:none; border:0; cursor:pointer;
+  display:flex; align-items:center; gap:6px;
+}
+.avatar{ width:28px; height:28px; border-radius:50%; }
+.chev{ font-size:12px; opacity:.7; }
+
+/* ===== Hover popup ala Figma ===== */
+.poster.isHover{
+  transform: translateY(-10px) scale(1.05);
+  z-index: 50;
+  box-shadow: 0 18px 60px rgba(0,0,0,.6);
+}
+
+/* pop up card */
+.pop{
+  position:absolute;
+  left:0;
+  right:0;
+  top:100%;
+  margin-top:10px;
+
+  background: rgba(25,29,33,.96);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.65);
+}
+
+.popActions{
+  display:flex;
+  gap:10px;
+  margin-bottom:10px;
+}
+.popBtn{
+  width:34px; height:34px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.25);
+  color:#fff;
+  cursor:pointer;
+}
+
+.popMeta{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color: rgba(255,255,255,.78);
+  font-size:12px;
+  margin-bottom:10px;
+}
+
+.popTags{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* ukuran poster per row */
+.poster--landscape{ min-width: 260px; }
+.poster--landscape .posterImg{ height: 140px; }
+
+.poster--portrait{ min-width: 180px; }
+.poster--portrait .posterImg{ height: 260px; }
+
+/* DROPDOWN */
+.menu{
+  position:absolute; right:0; top:40px;
+  background:#191d21;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;
+  overflow:hidden;
+  min-width:180px;
+}
+
+.menuItem{
+  display:flex;            /* ✅ supaya icon + text sejajar */
+  align-items:center;
+  gap:10px;
+  color:#fff;
+}
+
+.miIcon{
+  width:18px;
+  height:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  opacity:.9;
+}
+
+.miIcon svg{
+  width:18px;
+  height:18px;
+  fill: currentColor;      /* ✅ ngikut warna teks */
+  display:block;
+}
+
+.menuItem:hover{ background:rgba(255,255,255,.08); }
+
+/* MAIN */
+.main{ max-width:1200px; margin:0 auto; padding:0 22px 40px; }
+
+/* HERO */
+
+.heroFade{
+  position:absolute; inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,.3) 60%, transparent),
+    linear-gradient(180deg, transparent, rgba(0,0,0,.8));
+}
+
+.heroTitle{ font-size:42px; margin:0 0 10px; }
+.heroDesc{ font-size:13px; color:rgba(255,255,255,.75); margin-bottom:18px; }
+.heroBtns{ display:flex; gap:10px; align-items:center; }
+
+.heroPrimary{
+  background:#2d5bff;
+  border:0;
+  padding:10px 16px;
+  border-radius:999px;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+.heroGhost{
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.15);
+  padding:10px 16px;
+  border-radius:999px;
+  color:#fff;
+}
+.agePill{
+  font-size:12px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.2);
+}
+/* ===== HERO TOP BAR (Genre) ===== */
+.heroTopBar{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom: 12px;
+}
+
+.genreBtn{
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.35);
+  color:#fff;
+  padding:8px 12px;
+  border-radius:10px;
+  font-size:12px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.genreDrop{
+  position:absolute;
+  margin-top: 42px;
+  left: 26px;
+  z-index: 30;
+  display:flex;
+  gap:18px;
+  padding:14px;
+  border-radius:14px;
+  background: rgba(25,29,33,.95);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 60px rgba(0,0,0,.6);
+}
+
+.genreCol{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  min-width: 170px;
+}
+
+.genreCol a{
+  font-size:12px;
+  color: rgba(255,255,255,.75);
+}
+.genreCol a:hover{ color:#fff; }
+
+/* ===== Selengkapnya button icon ===== */
+.infoBang{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  border-radius:6px;
+  background: rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.18);
+  margin-right:8px;
+  font-weight:900;
+  line-height:1;
+}
+
+/* ===== MORE MODAL ===== */
+.moreOverlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 18px;
+}
+
+.moreModal{
+  width: min(720px, 94vw);
+  border-radius: 18px;
+  background: rgba(25,29,33,.96);
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 22px 80px rgba(0,0,0,.7);
+  padding: 16px;
+}
+
+.moreHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom: 14px;
+}
+
+.moreTitle{
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.moreClose{
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.25);
+  color:#fff;
+  cursor:pointer;
+}
+
+.moreGrid{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 10px;
+}
+
+.chip{
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+  color:#fff;
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor:pointer;
+}
+.chip:hover{
+  background: rgba(255,255,255,.10);
+}
+
+@media (max-width: 540px){
+  .moreGrid{ grid-template-columns: repeat(2, 1fr); }
+  .genreDrop{ left: 16px; right: 16px; }
+}
+
+/* ROW */
+.rows{ margin-top:24px; }
+.hSection{ margin-bottom:24px; }
+.hSectionTitle{ font-size:18px; margin-bottom:10px; }
+
+.hRowWrap{ position:relative; }
+.hRow{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  overflow-y: visible;
+  padding:4px 36px 80px; /* kasih ruang bawah buat popup */
+  scroll-behavior:smooth;
+}
+
+.hRow::-webkit-scrollbar{ height:8px; }
+.hRow::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,.15);
+  border-radius:999px;
+}
+
+.hArrow{
+  position:absolute; top:50%;
+  transform:translateY(-50%);
+  width:34px; height:34px;
+  border-radius:50%;
+  background:rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,.15);
+  color:#fff;
+  cursor:pointer;
+}
+.hArrowLeft{ left:0; }
+.hArrowRight{ right:0; }
+
+/* POSTER */
+.poster{
+  position: relative;
+  border-radius:12px;
+  overflow: visible;            /* ✅ penting: popup bisa keluar */
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.posterMedia{
+  position:relative;
+  border-radius:12px;
+  overflow:hidden;              /* ✅ radius untuk gambar & badge */
+}
+.poster--landscape .posterMedia{ height: 140px; }
+.poster--portrait  .posterMedia{ height: 260px; }
+
+
+.posterImg{
+  width:100%;
+  height:100%;                 
+  object-fit:cover;
+}
+
+.posterBadge{
+  position:absolute; top:8px; left:8px;
+  font-size:10px;
+  background:#2d5bff;
+  padding:4px 8px;
+  border-radius:999px;
+}
+.posterTop{
+  position:absolute; top:8px; right:8px;
+  font-size:10px;
+  background:#e53935;
+  padding:4px 8px;
+  border-radius:6px;
+}
+.posterCap{
+  padding:8px 10px;
+  display:flex; justify-content:space-between;
+}
+.posterCapTitle{ font-size:12px; font-weight:700; }
+.posterCapMeta{ font-size:11px; color:rgba(255,255,255,.6); }
+
+.tag{
+  font-size:11px;
+  color: rgba(255,255,255,.75);
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+/* === Episode list (Figma style) === */
+.figmaEp {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.epCard {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 44px 180px 1fr;
+  gap: 14px;
+  align-items: center;
+
+  padding: 14px;
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.epCard:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.epNo {
+  opacity: 0.55;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+}
+
+.epThumbWrap {
+  width: 180px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  flex: 0 0 auto;
+}
+
+.epThumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.epInfo {
+  min-width: 0;
+}
+
+.epTitleRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.epTitle {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.2;
+
+  /* biar gak melebar */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.epDur {
+  opacity: 0.6;
+  font-size: 12px;
+  flex: 0 0 auto;
+}
+
+.epDesc {
+  opacity: 0.75;
+  font-size: 12px;
+  line-height: 1.35;
+
+  /* max 2 baris */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+/* FOOTER */
+.footer{
+  margin-top:40px;
+  padding-top:30px;
+  border-top:1px solid rgba(255,255,255,.08);
+  display:flex; justify-content:space-between; gap:40px;
+  flex-wrap:wrap;
+}
+
+.footerInner{
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: 22px 0;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.footerLogo{ height:22px; }
+.footerCopy{ font-size:12px; color:rgba(255,255,255,.6); margin-top:8px; }
+.footerCols{ display:flex; gap:40px; }
+.fList a{ font-size:12px; color:rgba(255,255,255,.65); }
+.fList a:hover{ color:#fff; }
+
+/* ===== HERO IMPROVE ===== */
+.hero{
+  position:relative;
+  margin-top:12px;
+  border-radius:18px;
+  min-height:360px;
+  background-size:cover;
+  background-position:center;
+  overflow:hidden;
+}
+
+/* ✅ teks jadi "di bawah", bukan tengah */
+.heroContent.heroContent--bottom{
+  position:relative;
+  padding: 150px 26px 26px; /* lebih turun */
+  max-width:560px;
+}
+
+/* ✅ tombol sound */
+/* tombol sound DEFAULT: versi bawah (inline) */
+.heroSound{
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.35);
+  color:#fff;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+.heroSound svg{
+  width:18px;
+  height:18px;
+  fill: currentColor;
+  display:block;
+}
+
+/* kalau mau khusus bottom (opsional) */
+
+/* ===== DETAIL MODAL (Figma) ===== */
+.detailOverlay{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.60);
+  z-index: 200;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 14px;
+}
+
+.detailModal{
+  width: min(920px, 96vw);
+  max-height: 92vh;
+  overflow:auto;
+  border-radius: 18px;
+  background: rgba(15,18,22,.98);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow: 0 28px 120px rgba(0,0,0,.75);
+  position:relative;
+}
+
+/* ✅ FIX: tombol Back & Close jangan nabrak absolute lama */
+.detailTopActions .detailClose,
+.detailTopActions .detailBack{
+  position: static;
+  top: auto;
+  right: auto;
+}
+
+.detailTopActions{
+  position:absolute;
+  top:12px;
+  right:12px;
+  display:flex;
+  gap:12px; /* ✅ jarak lebih lebar */
+  z-index:6;
+}
+
+
+.detailHero{
+  position:relative;
+  height: 340px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 18px 18px 0 0;
+  overflow:hidden;
+}
+
+.detailHeroFade{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.25) 60%, rgba(0,0,0,.05)),
+    linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.85));
+}
+
+.detailTitle{
+  margin: 10px 0 10px;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.detailActions{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin: 8px 0 10px;
+}
+
+.detailPlay{
+  border:0;
+  background:#2d5bff;
+  color:#fff;
+  padding:10px 16px;
+  border-radius:999px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.detailBack,
+.detailClose{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.35);
+  color:#fff;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.detailBack:hover,
+.detailClose:hover{
+  background: rgba(255,255,255,.08);
+}
+
+.detailCircleBtn{
+  width:40px;
+  height:40px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.35);
+  color:#fff;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.detailMeta{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  font-size: 12px;
+  color: rgba(255,255,255,.78);
+  margin-bottom: 10px;
+}
+.detailMeta .dot{ opacity:.6; }
+.pill{
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+}
+
+.detailDesc{
+  font-size: 12px;
+  color: rgba(255,255,255,.78);
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.detailInfoGrid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 14px;
+}
+
+.infoLabel{
+  font-size: 11px;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 6px;
+}
+.infoText{
+  font-size: 12px;
+  color: rgba(255,255,255,.82);
+}
+
+.detailBody{
+  padding: 14px 18px 18px;
+}
+
+.detailSectionTitle{
+  font-weight: 800;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.recTop{
+  position:absolute;
+  top:8px;
+  right:8px;
+  font-size: 10px;
+  background: rgba(220,38,38,.95);
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.epList{
+  display:grid;
+  gap: 10px;
+}
+
+.epRow{
+  display:flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.epNo{
+  width: 26px;
+  font-size: 12px;
+  color: rgba(255,255,255,.65);
+}
+
+.epMain{
+  display:flex;
+  justify-content:space-between;
+  width:100%;
+  gap: 10px;
+  align-items:center;
+}
+
+.epTitle{
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.epDur{
+  font-size: 11px;
+  color: rgba(255,255,255,.60);
+}
+
+@media (max-width: 620px){
+  .detailHero{ height: 260px; }
+  .detailInfoGrid{ grid-template-columns: 1fr; }
+  .recGrid{ grid-template-columns: repeat(2, 1fr); }
+}
+
+/* === DETAIL: info di bawah banner === */
+.detailInfo{
+  padding: 14px 16px 8px;
+}
+
+/* tombol + aktif */
+.detailCircleBtn.isActive{
+  border-color: rgba(255,255,255,.85);
+}
+
+/* === Rekomendasi Serupa: horizontal scroll + kecil + genre === */
+.recRow{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding: 10px 16px 16px;
+  scroll-snap-type: x mandatory;
+}
+
+.recCard{
+  flex: 0 0 140px;
+  width: 140px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  position: relative;
+  scroll-snap-align: start;
+  cursor: pointer;
+}
+
+.recCard img{
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 14px;
+  display:block;
+}
+
+.recMeta{
+  padding-top: 8px;
+}
+
+.recTitle{
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.recGenre{
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: .75;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detailBannerImg{
+  width: 100%;
+  height: 320px;
+  object-fit: contain;     /* ✅ biar tidak kepotong */
+  background: rgba(0,0,0,.35);
+  display: block;
+}
+
+/* Konten tombol tetap nempel di banner */
+.detailHeroContent{
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2;
+}
+
+.navInner{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: nowrap;           /* ✅ jangan sampai turun baris */
+}
+
+.navLeft{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.navLinks{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  white-space: nowrap;
+}
+
+.navRight{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;           /* ✅ dorong ke kanan */
+}
+
+/* layar kecil: sembunyikan teks menu biar avatar tetap kanan */
+@media (max-width: 520px){
+  .navLinks{ gap: 12px; }
+  .navLink{ font-size: 13px; }
+}
+
+/* ===== FOOTER FIX (RESPONSIVE) ===== */
+.fInner{
+  width: min(1120px, 92vw);
+  margin: 0 auto;
+  padding: 22px 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* ✅ 3 kolom rapi */
+  gap: 22px;
+}
+
+.fCol{
+  min-width: 0;
+}
+
+.fTitle{
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.fList{
+  display: grid;
+  gap: 8px;
+}
+
+.fList a{
+  opacity: .78;
+  text-decoration: none;
+}
+
+.fList a:hover{
+  opacity: 1;
+}
+
+/* mobile: jadi 1 kolom tapi tetap ada spacing */
+@media (max-width: 620px){
+  .fInner{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 700px){
+  .detailInfoWrap{
+    grid-template-columns: 1fr;
+  }
+  .detailPosterImg{
+    width: 140px;
+  }
+}
+
+
+/* ===== RESPONSIVE HERO (HP) ===== */
+@media (max-width: 720px){
+  .main{ padding: 0 14px 32px; } /* biar semua lebih rapih di HP */
+
+  .hero{
+    min-height: 220px;  /* banner lebih kecil */
+    border-radius: 14px;
+
+    /* ✅ biar gambar "muat" dan gak kepotong */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #0b0f10; /* isi sisi yang kosong */
+  }
+
+  .heroContent.heroContent--bottom{
+    padding: 120px 16px 16px;
+    max-width: 100%;
+  }
+
+  .heroTitle{ font-size: 26px; }
+  .heroDesc{ font-size: 12px; max-width: 95%; }
+
+  .heroBtns{ gap: 8px; flex-wrap: wrap; }
+  .heroPrimary, .heroGhost{
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+
+  .heroSound{
+    width:36px;
+    height:36px;
+    top:12px;
+    right:12px;
+  }
+}
+
+@media (max-width: 720px){
+  .hSectionTitle{ font-size: 16px; }
+  .hRow{
+    gap: 12px;
+    padding: 4px 18px 70px; /* lebih kecil biar rapih */
+  }
+
+  .poster--landscape{ min-width: 220px; }
+  .poster--landscape .posterMedia{ height: 120px; }
+
+  .poster--portrait{ min-width: 150px; }
+  .poster--portrait .posterMedia{ height: 220px; }
+}
+
+/* ✅ icon svg supaya pasti keliatan */
+.miIcon{
+  width:18px;
+  height:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 18px;
+}
+.miIcon svg{
+  width:18px;
+  height:18px;
+  fill: rgba(255,255,255,.85);
+}
+.menuItem{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}

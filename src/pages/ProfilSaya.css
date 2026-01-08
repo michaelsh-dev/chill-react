@@ -1,0 +1,294 @@
+/* page */
+.pfPage { min-height: 100vh; background:#0b0f10; color:#fff; }
+.pfMain { width:min(1180px, 92vw); margin: 0 auto; padding: 22px 0 40px; }
+.pfTitle { font-size: 28px; font-weight: 800; margin: 18px 0 22px; }
+
+.pfGrid{
+  display:grid;
+  grid-template-columns: 600px 1fr;
+  gap:24px;
+  align-items:start;
+}
+
+/* NAVBAR: pakai class yg sama dgn home kalau kamu sudah punya.
+   Kalau nav di Home sudah global di index.css, ini ga masalah. */
+.nav { position: sticky; top:0; z-index: 20; background: rgba(11,15,16,.75); backdrop-filter: blur(10px); border-bottom:1px solid rgba(255,255,255,.08); padding: 14px 24px; display:flex; justify-content:space-between; align-items:center; }
+.navLeft{ display:flex; align-items:center; gap:22px; }
+.navBrand{ display:flex; align-items:center; gap:10px; }
+.navLogo{ height: 22px; }
+.navLinks{ display:flex; gap:18px; }
+.navLink{ color: rgba(255,255,255,.75); font-weight: 600; font-size: 13px; }
+.navLink:hover{ color:#fff; }
+.navRight{ position: relative; }
+.avatarBtn{ display:flex; align-items:center; gap:8px; border:0; background:transparent; color:#fff; cursor:pointer; }
+.avatar{ width: 28px; height: 28px; border-radius: 999px; object-fit: cover; }
+.chev{ opacity:.8; }
+.menu{
+  position:absolute; right:0; top:42px;
+  width: 200px;
+  background: rgba(20,23,28,.95);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius: 12px;
+  overflow:hidden;
+}
+.menuItem{ display:block; padding: 10px 12px; color:#fff; font-size: 13px; }
+.menuItem:hover{ background: rgba(255,255,255,.06); }
+
+/* top layout */
+.pfTop{
+  display:grid;
+  grid-template-columns: 420px 1fr; /* kiri fix, kanan ngisi */
+  gap:24px;
+  align-items:start;
+}
+.pfProfileTop{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+
+.pfUploadArea{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+/* left card */
+.pfLeftCard{
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+  border-radius: 18px;
+  padding: 18px;
+}
+.pfProfileRow{ display:flex; gap:14px; align-items:center; margin-bottom: 14px; }
+.pfAvatar{ width:72px; height:72px; border-radius: 999px; object-fit: cover; }
+.pfUploadCol{ display:flex; flex-direction:column; gap:6px; }
+.pfUploadBtn{
+  width: fit-content;
+  border:1px solid rgba(47,107,255,.9);
+  color: #8fb0ff;
+  background: rgba(47,107,255,.12);
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor:pointer;
+}
+.pfHint{ color: rgba(255,255,255,.55); font-size: 11px; }
+
+.pfForm{ display:flex; flex-direction:column; gap: 12px; margin-top: 8px; }
+.pfField{ display:flex; flex-direction:column; gap:8px; }
+.pfLabel{ color: rgba(255,255,255,.65); font-size: 12px; }
+
+.pfInputWrap{
+  display:flex;
+  align-items:center;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  border-radius: 12px;
+  overflow:hidden;
+}
+.pfInput{
+  flex:1;
+  padding: 12px 12px;
+  border:0;
+  outline: none;
+  background: transparent;
+  color:#fff;
+  font-size: 13px;
+}
+.pfEdit{
+  width: 42px;
+  height: 42px;
+  border:0;
+  background: transparent;
+  border-left:1px solid rgba(255,255,255,.08);
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+}
+.pfPencil{ width:18px; height:18px; fill: rgba(255,255,255,.75); }
+.pfEdit:hover .pfPencil{ fill:#fff; }
+
+.pfSave{
+  width: fit-content;
+  margin-top: 4px;
+  border:0;
+  background:#2F6BFF;
+  color:#fff;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor:pointer;
+}
+
+.pfDemoToggle{
+  margin-top: 6px;
+  width: fit-content;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.25);
+  color: rgba(255,255,255,.8);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor:pointer;
+  font-size: 12px;
+}
+
+/* right card */
+
+.pfRightCard{ width:100%; min-height:110px; }
+
+.pfRightCard{
+  border-radius: 18px;
+  padding: 18px;
+  border:1px solid rgba(255,255,255,.10);
+}
+.pfRightCard--free{
+  background: rgba(255,255,255,.03);
+}
+.pfRightTop{ display:flex; gap:12px; align-items:flex-start; }
+.pfRightIcon{ font-size: 20px; }
+.pfRightTitle{ font-weight: 800; font-size: 14px; }
+.pfRightDesc{ margin-top: 6px; color: rgba(255,255,255,.65); font-size: 12px; line-height: 1.35; }
+.pfRightBtn{
+  margin-top: 14px;
+  border:0;
+  background: rgba(255,255,255,.85);
+  color:#111;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor:pointer;
+}
+
+.pfRightCard--premium{
+  background: linear-gradient(135deg, rgba(47,107,255,.85), rgba(47,107,255,.45));
+}
+.pfPill{
+  display:inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.18);
+  font-weight: 800;
+  font-size: 12px;
+}
+.pfRightTitle2{ margin-top: 10px; font-weight: 900; font-size: 16px; }
+.pfRightDesc2{ margin-top: 8px; color: rgba(255,255,255,.85); font-size: 12px; }
+.pfRightFoot{ margin-top: 10px; color: rgba(255,255,255,.75); font-size: 11px; }
+
+/* list row */
+.pfList{ margin-top: 18px; }
+.pfListHead{ display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px; }
+.pfListTitle{ font-size: 18px; font-weight: 900; margin:0; }
+.pfSeeAll{ color: rgba(255,255,255,.65); font-size: 12px; font-weight: 700; }
+.pfSeeAll:hover{ color:#fff; }
+
+.pfRow{
+  display:flex;
+  gap: 14px;
+  overflow:auto;
+  padding-bottom: 8px;
+}
+.pfPoster{ width: 138px; flex: 0 0 auto; }
+.pfPosterMedia{ position:relative; border-radius: 14px; overflow:hidden; border:1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04); }
+.pfPosterImg{ width:100%; height: 190px; object-fit: cover; display:block; }
+
+.pfBadge{
+  position:absolute;
+  top: 10px;
+  left: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.pfBadgeNew{ background:#2F6BFF; color:#fff; }
+.pfBadgeTop{ left:auto; right:10px; background:#E53935; color:#fff; }
+
+.pfEmpty{
+  color: rgba(255,255,255,.6);
+  font-size: 13px;
+  padding: 12px 0;
+}
+
+/* footer */
+.pfFooter{
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  display:flex;
+  justify-content:space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.pfFooterLeft{ display:flex; align-items:center; gap:12px; }
+.pfFooterLogo{ height: 20px; }
+.pfFooterCopy{ color: rgba(255,255,255,.55); font-size: 12px; }
+
+.pfFooterCols{ display:flex; gap: 34px; }
+.pfColTitle{ font-weight: 900; font-size: 12px; margin-bottom: 10px; }
+.pfColLinks{ display:flex; flex-direction:column; gap:8px; }
+.pfColLinks a{ color: rgba(255,255,255,.55); font-size: 12px; }
+.pfColLinks a:hover{ color:#fff; }
+
+@media (max-width: 980px){
+  .pfGrid{ grid-template-columns: 1fr; }
+}
+
+.pfRightBtn--ghost{
+  margin-top:10px;
+  background: transparent;
+  border:1px solid rgba(255,255,255,.18);
+  color:#fff;
+}
+.pfRightBtn--ghost:hover{
+  background: rgba(255,255,255,.06);
+}
+
+/* ✅ icon svg supaya pasti keliatan */
+.miIcon{
+  width:18px;
+  height:18px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 18px;
+}
+.miIcon svg{
+  width:18px;
+  height:18px;
+  fill: rgba(255,255,255,.9);
+}
+
+/* tombol ghost */
+.pfRightBtn--ghost{
+  margin-top:10px;
+  background: transparent;
+  border:1px solid rgba(255,255,255,.18);
+  color:#fff;
+}
+.pfRightBtn--ghost:hover{
+  background: rgba(255,255,255,.06);
+}
+
+.pfSaveRow{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top: 4px;
+}
+
+.pfSavedMsg{
+  color: rgba(255,255,255,.75);
+  font-size: 12px;
+}
+
+.pfEdit {
+  color: #fff;          /* 👈 ini bikin icon putih */
+}
+
+.pfEdit:hover {
+  color: #ffffffcc;    /* hover agak redup */
+}
