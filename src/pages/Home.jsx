@@ -1,5 +1,8 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+import { moviesService } from "../services/api/movies.service";
+import { myListService } from "../services/api/myList.service";
 
 // BRAND
 import logo from "../assets/brand/logo.png";
@@ -110,18 +113,84 @@ export default function Home() {
   const [activeMovie, setActiveMovie] = useState(null);
   const [showEpisodes, setShowEpisodes] = useState(false);
 
-  // ✅ Daftar Saya (persist localStorage)
-  const [myList, setMyList] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("myList") || "[]");
-    } catch {
-      return [];
-    }
-  });
+  // ✅ Daftar Saya dari mockapi
+  const [myList, setMyList] = useState([]);
+  const [myListLoading, setMyListLoading] = useState(true);
+  const [myListError, setMyListError] = useState("");
+
+  useEffect(() => {
+    const runMyList = async () => {
+      try {
+        setMyListLoading(true);
+        setMyListError("");
+        const data = await myListService.getAll();
+        setMyList(Array.isArray(data) ? data : []);
+      } catch (e) {
+        console.error(e);
+        setMyListError("Gagal ambil data daftar saya");
+      } finally {
+        setMyListLoading(false);
+      }
+    };
+
+    runMyList();
+  }, []);
+
+  // ✅✅✅ TEMPEL BLOK INI DI SINI (SETELAH myList, SEBELUM navigate)
+  const [apiMovies, setApiMovies] = useState([]);
+  const [apiLoading, setApiLoading] = useState(true);
+  const [apiError, setApiError] = useState("");
+
+  useEffect(() => {
+    const run = async () => {
+      try {
+        setApiLoading(true);
+        setApiError("");
+        const data = await moviesService.getAll();
+        setApiMovies(Array.isArray(data) ? data : []);
+      } catch (e) {
+        console.error(e);
+        setApiError("Gagal ambil data movies dari API");
+      } finally {
+        setApiLoading(false);
+      }
+    };
+    run();
+  }, []);
+
+  const posterByCode = {
+    tmw: pTomorrow,
+    antman: pAntman,
+    tedlasso: pTedlasso,
+    doctor: pDoctor,
+    sonic: pSonic,
+    guardians: pGuardians,
+    dutyafter: pDutyafter,
+    mha: pMha,
+    rio: pRio,
+    otto: pCalledotto,
+    suzume: pSuzume,
+    blue: pBlueLock,
+    dlookup: pDontLookUp,
+    otto: pOtto,
+    jurassic: pJurassic,
+    bighero: pBigHero,
+    mermaid: pMermaid,
+    missing: pMissing,
+    allofus: pAllofus,
+    tedlasso1: pTedlassoEp1,
+    tedlasso2: pTedlassoEp2,
+    tedlasso3: pTedlassoEp3,
+    tedlasso4: pTedlassoEp4,
+    tedlasso5: pTedlassoEp5,
+    tedlassovid: pTedlassoEp1Vid,
+  };
 
   const navigate = useNavigate();
 
-  const isInMyList = (id) => myList.some((x) => x?.id === id);
+  const isInMyList = (movieId) =>
+    myList.some((x) => String(x?.movieId ?? x?.id) === String(movieId));
+
   const isSeries = (m) =>
     m?.kind === "series" || (Array.isArray(m?.episodesList) && m.episodesList.length > 0);
   const makeDefaultEpisodes = (m, count = 5) =>
@@ -188,21 +257,49 @@ export default function Home() {
     };
   };
 
-
-
-
-  const toggleMyList = (movie) => {
+  const toggleMyList = async (movie) => {
     const fixed = normalizeMovie(movie);
 
-    setMyList((prev) => {
-      const exists = prev.some((x) => String(x?.id) === String(fixed.id));
-      const next = exists
-        ? prev.filter((x) => String(x?.id) !== String(fixed.id))
-        : [...prev, fixed];
+    try {
+      const existingItem = myList.find(
+        (x) => String(x?.movieId ?? x?.id) === String(fixed.id)
+      );
 
-      localStorage.setItem("myList", JSON.stringify(next));
-      return next;
-    });
+      if (existingItem) {
+        await myListService.remove(existingItem.id);
+        setMyList((prev) =>
+          prev.filter((x) => String(x.id) !== String(existingItem.id))
+        );
+        return;
+      }
+
+      const payload = {
+        movieId: fixed.id,
+        title: fixed.title,
+        img: fixed.img,
+        bannerImg: fixed.bannerImg,
+        posterImg: fixed.posterImg,
+        kind: fixed.kind,
+        year: fixed.year,
+        duration: fixed.duration,
+        age: fixed.age,
+        desc: fixed.desc,
+        cast: fixed.cast,
+        genre: fixed.genre,
+        creator: fixed.creator,
+        rating: fixed.rating ?? null,
+        badge: fixed.badge ?? null,
+        top10: !!fixed.top10,
+        episodesList: fixed.episodesList ?? null,
+        watched: false,
+      };
+
+      const created = await myListService.add(payload);
+      setMyList((prev) => [...prev, created]);
+    } catch (error) {
+      console.error(error);
+      alert("Gagal update Daftar Saya");
+    }
   };
 
   const getPlayList = (m) => {
@@ -231,404 +328,33 @@ export default function Home() {
   };
 
   const rows = useMemo(() => {
-    const trendingBase = [
-      {
-        id: "tmw",
-        title: "The Tomorrow War",
-        img: pTomorrow,
-        top10: true,
-        year: "2021",
-        duration: "2j 18m",
-        age: "PG-13",
-        desc: "Seorang ayah direkrut ke perang masa depan untuk menyelamatkan umat manusia.",
-        cast: "Chris Pratt, Yvonne Strahovski, J.K. Simmons",
-        genre: "Aksi, Sci-Fi",
-        creator: "Chris McKay",
-      },
-      {
-        id: "ant",
-        title: "Ant-Man",
-        img: pAntman,
-        top10: true,
-        year: "2015",
-        duration: "1j 57m",
-        age: "PG-13",
-        desc: "Mantan narapidana menjadi pahlawan mini dengan misi besar yang berbahaya.",
-        cast: "Paul Rudd, Evangeline Lilly, Michael Douglas",
-        genre: "Aksi, Komedi",
-        creator: "Peyton Reed",
-      },
-      {
-        id: "gotg",
-        title: "Guardians",
-        img: pGuardians,
-        top10: true,
-        year: "2014",
-        duration: "2j 01m",
-        age: "PG-13",
-        desc: "Sekelompok penjahat luar angkasa bersatu untuk menghentikan ancaman galaksi.",
-        cast: "Chris Pratt, Zoe Saldana, Dave Bautista",
-        genre: "Aksi, Sci-Fi",
-        creator: "James Gunn",
-      },
-      {
-        id: "otto2",
-        title: "A Man Called Otto",
-        img: pCalledotto,
-        top10: true,
-        year: "2022",
-        duration: "2j 06m",
-        age: "PG-13",
-        desc: "Pria pemarah perlahan berubah saat bertemu tetangga baru yang hangat.",
-        cast: "Tom Hanks, Mariana Treviño",
-        genre: "Drama, Komedi",
-        creator: "Marc Forster",
-      },
-      {
-        id: "mer",
-        title: "Little Mermaid",
-        img: pMermaid,
-        kind: "movie",
-        year: "2023",
-        duration: "2j 15m",
-        age: "PG",
-        desc: "Putri duyung yang penasaran membuat kesepakatan berbahaya demi hidup di daratan.",
-        cast: "Halle Bailey, Jonah Hauer-King, Melissa McCarthy",
-        genre: "Fantasi, Keluarga",
-        creator: "Rob Marshall",
-      },
-      {
-        id: "mha",
-        title: "My Hero Academia",
-        img: pMha,
-        kind: "series",
-        year: "2016",
-        duration: "25 Episode",
-        age: "13+",
-        desc: "Seorang remaja tanpa kekuatan berjuang masuk akademi pahlawan dan membuktikan dirinya.",
-        cast: "Daiki Yamashita, Nobuhiko Okamoto",
-        genre: "Anime, Aksi",
-        creator: "Kenji Nagasaki",
-        episodesList: [
-          { no: 1, title: "Izuku Midoriya: Origin", dur: "24m" },
-          { no: 2, title: "What It Takes to Be a Hero", dur: "24m" },
-          { no: 3, title: "Roaring Muscles", dur: "24m" },
-          { no: 4, title: "Start Line", dur: "24m" },
-          { no: 5, title: "What I Can Do for Now", dur: "24m" },
-        ],
-      },
-
-    ];
+    // ubah data API jadi format yang Row kamu butuhkan
+    const enriched = apiMovies.map((m) => ({
+      id: m.id ?? m.code,
+      code: m.code,
+      category: m?.category,
+      title: m.title,
+      year: m.year,
+      duration: m.duration,
+      img: posterByCode[m?.code] || pBatman,
+      posterImg: posterByCode[m?.code] || pBatman,
+      bannerImg: posterByCode[m?.code] || pBatman,
+      top10: m.category === "top10",
+      kind: "movie",
+      desc: m.desc ?? "Deskripsi belum tersedia.",
+      cast: m.cast ?? "—",
+      genre: m.genre ?? "—",
+      creator: m.creator ?? "—",
+      age: m.age ?? "PG-13",
+    }));
 
     return {
-      lanjut: [
-        {
-          id: "dlu",
-          title: "Don't Look Up",
-          img: pDontLookUp,
-          rating: "4.5/5",
-          year: "2021",
-          duration: "2j 18m",
-          age: "18+",
-          desc: "Dua ilmuwan mencoba memperingatkan dunia tentang komet mematikan—tapi tak ada yang peduli.",
-          cast: "Leonardo DiCaprio, Jennifer Lawrence",
-          genre: "Satire, Komedi",
-          creator: "Adam McKay",
-          recs: trendingBase.slice(0, 3),
-        },
-        {
-          id: "tedlasso",
-          title: "Ted Lasso",
-          img: pTedlasso,
-          rating: "4.7/5",
-          year: "2020",
-          duration: "10 Episode",
-          age: "PG-13",
-          desc: "Pelatih sepak bola Amerika yang optimistis memimpin klub Inggris dan menyatukan tim yang retak.",
-          cast: "Jason Sudeikis, Brett Goldstein, Hannah Waddingham",
-          genre: "Komedi, Drama",
-          creator: "Bill Lawrence",
-          episodesList: [
-            {
-              no: 1,
-              title: "Pilot",
-              dur: "29m",
-              thumb: pTedlassoEp1,
-              playerThumb: pTedlassoEp1Vid,
-              desc: "Ted Lasso direkrut melatih AFC Richmond meski tak paham sepak bola Inggris.",
-              videoTo: "/video/tedlasso/1",
-            },
-            {
-              no: 2,
-              title: "Biscuits",
-              dur: "29m",
-              thumb: pTedlassoEp2,
-              desc: "Ted mulai membangun hubungan dengan tim dan memberi kejutan kecil untuk Rebecca.",
-              videoTo: "/video/tedlasso/2",
-            },
-            {
-              no: 3,
-              title: "Trent Crimm, The Independent",
-              dur: "30m",
-              thumb: pTedlassoEp3,
-              desc: "Seorang jurnalis mengikuti Ted sehari penuh untuk menulis artikel tentang dirinya.",
-              videoTo: "/video/tedlasso/3",
-            },
-            {
-              no: 4,
-              title: "For The Children",
-              dur: "31m",
-              thumb: pTedlassoEp4,
-              desc: "Gala amal klub membuat banyak konflik kecil muncul di antara staf dan pemain.",
-              videoTo: "/video/tedlasso/4",
-            },
-            {
-              no: 5,
-              title: "Tan Lines",
-              dur: "31m",
-              thumb: pTedlassoEp5,
-              desc: "Masalah strategi tim memuncak, sementara Ted berusaha tetap positif di bawah tekanan.",
-              videoTo: "/video/tedlasso/5",
-            },
-          ],
-
-          recs: trendingBase.slice(0, 3),
-        },
-        {
-          id: "bl",
-          title: "Blue Lock",
-          img: pBlueLock,
-          kind: "series",
-          rating: "4.6/5",
-          badge: "Episode Baru",
-          year: "2022",
-          duration: "24 Episode",
-          age: "13+",
-          desc: "Program brutal memilih striker terbaik Jepang lewat kompetisi yang tanpa ampun.",
-          cast: "Kazuki Ura, Tasuku Kaito",
-          genre: "Anime, Olahraga",
-          creator: "Tetsuaki Watanabe",
-          recs: trendingBase.slice(1, 4),
-        },
-        {
-          id: "otto",
-          title: "A Man Called Otto",
-          img: pOtto,
-          rating: "4.4/5",
-          year: "2022",
-          duration: "2j 06m",
-          age: "PG-13",
-          desc: "Tetangga baru mengubah hidup Otto yang dingin jadi lebih hangat dan bermakna.",
-          cast: "Tom Hanks, Mariana Treviño",
-          genre: "Drama, Komedi",
-          creator: "Marc Forster",
-          recs: trendingBase.slice(0, 3),
-        },
-        {
-          id: "bat",
-          title: "The Batman",
-          img: pBatman,
-          rating: "4.2/5",
-          year: "2022",
-          duration: "2j 56m",
-          age: "16+",
-          desc: "Batman menyelidiki pembunuhan berantai yang menyeret rahasia gelap Gotham.",
-          cast: "Robert Pattinson, Zoë Kravitz",
-          genre: "Aksi, Misteri",
-          creator: "Matt Reeves",
-          recs: trendingBase.slice(0, 3),
-        },
-      ],
-      top: [
-        {
-          id: "suz",
-          title: "Suzume",
-          img: pSuzume,
-          kind: "movie",
-          year: "2022",
-          duration: "2j 02m",
-          age: "13+",
-          desc: "Suzume membantu menutup pintu-pintu misterius yang memicu bencana di Jepang.",
-          cast: "Nanoka Hara, Hokuto Matsumura",
-          genre: "Fantasi, Petualangan",
-          creator: "Makoto Shinkai",
-          badge: "Baru",
-          top10: false,
-        },
-        {
-          id: "jur",
-          title: "Jurassic World",
-          img: pJurassic,
-          kind: "movie",
-          year: "2015",
-          duration: "2j 04m",
-          age: "PG-13",
-          desc: "Taman dinosaurus modern berubah jadi bencana saat eksperimen lepas kendali.",
-          cast: "Chris Pratt, Bryce Dallas Howard",
-          genre: "Aksi, Sci-Fi",
-          creator: "Colin Trevorrow",
-        },
-        {
-          id: "son",
-          title: "Sonic",
-          img: pSonic,
-          kind: "movie",
-          year: "2020",
-          duration: "1j 39m",
-          age: "PG",
-          desc: "Sonic berusaha menyelamatkan dunia sambil kabur dari musuh bebuyutannya.",
-          cast: "Ben Schwartz, Jim Carrey",
-          genre: "Komedi, Petualangan",
-          creator: "Jeff Fowler",
-        },
-        {
-          id: "all",
-          title: "All Of Us Are Dead",
-          img: pAllofus,
-          kind: "series",
-          year: "2022",
-          duration: "16 Episode",
-          age: "13+",
-          desc: "Sekolah berubah jadi neraka saat wabah zombie menyebar dan murid harus bertahan hidup.",
-          cast: "Park Ji-hu, Yoon Chan-young",
-          genre: "Horror, Thriller",
-          creator: "Lee Jae-kyoo",
-          episodesList: [
-            { no: 1, title: "Episode 1", dur: "60m" },
-            { no: 2, title: "Episode 2", dur: "58m" },
-            { no: 3, title: "Episode 3", dur: "56m" },
-          ],
-          recs: trendingBase.slice(0, 3),
-        },
-        {
-          id: "bh6",
-          title: "Big Hero 6",
-          img: pBigHero,
-          kind: "movie",
-          year: "2014",
-          duration: "1j 42m",
-          age: "PG",
-          desc: "Hiro dan Baymax membentuk tim pahlawan untuk mengungkap kejahatan di kota futuristik.",
-          cast: "Ryan Potter, Scott Adsit",
-          genre: "Animasi, Petualangan",
-          creator: "Don Hall",
-          top10: true,
-        },
-        {
-          id: "doctor",
-          title: "Doctor Strange",
-          img: pDoctor,
-          kind: "movie",
-          year: "2016",
-          duration: "1j 55m",
-          age: "PG-13",
-          desc: "Dokter jenius menemukan dunia sihir setelah kecelakaan menghancurkan kariernya.",
-          cast: "Benedict Cumberbatch, Tilda Swinton",
-          genre: "Aksi, Fantasi",
-          creator: "Scott Derrickson",
-          top10: true,
-        },
-      ],
-
-      trending: trendingBase,
-      rilis: [
-        {
-          id: "mer2",
-          title: "Little Mermaid",
-          img: pMermaid,
-          kind: "movie",
-          year: "2023",
-          duration: "2j 15m",
-          age: "PG",
-          desc: "Putri duyung ingin hidup di daratan dan membuat kesepakatan berbahaya.",
-          cast: "Halle Bailey, Jonah Hauer-King",
-          genre: "Fantasi, Keluarga",
-          creator: "Rob Marshall",
-          top10: true,
-          badge: "Episode Baru",
-        },
-        {
-          id: "das",
-          title: "Duty After School",
-          img: pDutyafter,
-          kind: "series",
-          year: "2023",
-          duration: "10 Episode",
-          age: "16+",
-          desc: "Siswa SMA direkrut untuk menghadapi ancaman misterius demi bertahan hidup.",
-          cast: "Shin Hyun-soo, Lee Soon-won",
-          genre: "Aksi, Thriller",
-          creator: "Sung Yong-il",
-          episodesList: [
-            { no: 1, title: "Episode 1", dur: "45m" },
-            { no: 2, title: "Episode 2", dur: "47m" },
-            { no: 3, title: "Episode 3", dur: "46m" },
-          ],
-          badge: "Episode Baru",
-        },
-        {
-          id: "bh62",
-          title: "Big Hero 6",
-          img: pBigHero,
-          kind: "movie",
-          year: "2014",
-          duration: "1j 42m",
-          age: "PG",
-          desc: "Hiro dan Baymax membentuk tim pahlawan untuk melindungi kota.",
-          cast: "Ryan Potter, Scott Adsit",
-          genre: "Animasi, Petualangan",
-          creator: "Don Hall",
-          top10: true,
-        },
-        {
-          id: "aoud",
-          title: "All Of Us Are Dead",
-          img: pAllofus,
-          kind: "series",
-          year: "2022",
-          duration: "16 Episode",
-          age: "13+",
-          desc: "Wabah zombie membuat sekolah terjebak dan murid harus bertahan.",
-          cast: "Park Ji-hu, Yoon Chan-young",
-          genre: "Horror, Thriller",
-          creator: "Lee Jae-kyoo",
-          episodesList: [
-            { no: 1, title: "Episode 1", dur: "60m" },
-            { no: 2, title: "Episode 2", dur: "58m" },
-            { no: 3, title: "Episode 3", dur: "56m" },
-          ],
-          badge: "Episode Baru",
-        },
-        {
-          id: "mis",
-          title: "Missing",
-          img: pMissing,
-          kind: "movie",
-          year: "2023",
-          duration: "1j 51m",
-          age: "16+",
-          desc: "Seorang ibu menelusuri jejak digital untuk menemukan putrinya yang hilang.",
-          cast: "Storm Reid, Nia Long",
-          genre: "Thriller, Misteri",
-          creator: "Nicholas D. Johnson",
-        },
-        {
-          id: "rio",
-          title: "Rio",
-          img: pRio,
-          kind: "movie",
-          year: "2011",
-          duration: "1j 36m",
-          age: "PG",
-          desc: "Seekor burung langka memulai petualangan seru di Rio de Janeiro.",
-          cast: "Jesse Eisenberg, Anne Hathaway",
-          genre: "Animasi, Komedi",
-          creator: "Carlos Saldanha",
-        },
-      ],
-
+      lanjut: enriched.filter((x) => x.category === "lanjut" || x.category === "continue"), // optional
+      top: enriched.filter((x) => x.category === "top10"),
+      trending: enriched.filter((x) => x.category === "trending"),
+      rilis: enriched.filter((x) => x.category === "rilis" || x.category === "new"), // optional
     };
-  }, []);
+  }, [apiMovies]);
   // ✅ kumpulkan semua film/series untuk dipakai cari rekomendasi serupa
   // ✅ kumpulin semua film & buang duplikat by id (dan title optional)
   const allMovies = useMemo(() => {
@@ -747,6 +473,7 @@ export default function Home() {
       </header>
 
       <main className="main">
+        {myListError && <div style={{ padding: 16, color: "salmon" }}>{myListError}</div>}
         <section className="hero" style={{ backgroundImage: `url(${heroImg})` }}>
           <div className="heroFade" />
           <div className="heroContent heroContent--bottom">
@@ -993,6 +720,8 @@ export default function Home() {
 
 
         <div className="rows">
+          {apiLoading && <div style={{ padding: 16, color: "white" }}>Loading dari API...</div>}
+          {apiError && <div style={{ padding: 16, color: "salmon" }}>{apiError}</div>}
           <Row title="Melanjutkan Tonton Film" items={rows.lanjut} variant="landscape" onSelect={handleSelectMovie} />
           <Row title="Top Rating Film dan Series Hari ini" items={rows.top} variant="portrait" onSelect={handleSelectMovie} />
           <Row title="Film Trending" items={rows.trending} variant="portrait" onSelect={handleSelectMovie} />

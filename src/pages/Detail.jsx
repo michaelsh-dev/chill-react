@@ -1,52 +1,69 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { myListService } from "../services/api/myList.service";
 
 export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [muted, setMuted] = useState(true);
-  const [showEpisodes, setShowEpisodes] = useState(true); // ✅ default langsung Episode
-  const [myList, setMyList] = useState(() => {
+  const [showEpisodes, setShowEpisodes] = useState(true);
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const run = async () => {
+      try {
+        setLoading(true);
+        const data = await myListService.getAll();
+        const found = data.find((m) => String(m?.id) === String(id));
+        setMovie(found || null);
+      } catch (error) {
+        console.error(error);
+        setMovie(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    run();
+  }, [id]);
+
+  const handleRemoveFromMyList = async () => {
     try {
-      return JSON.parse(localStorage.getItem("myList") || "[]");
-    } catch {
-      return [];
+      await myListService.remove(movie.id);
+      navigate("/daftar-saya");
+    } catch (error) {
+      console.error(error);
+      alert("Gagal hapus dari Daftar Saya");
     }
-  });
-
-  const movie = useMemo(() => {
-    // ✅ sumber data dari Daftar Saya (localStorage)
-    const found = myList.find((m) => String(m?.id) === String(id));
-    return found || null;
-  }, [myList, id]);
-
-  const isInMyList = (movieId) => myList.some((x) => String(x?.id) === String(movieId));
-
-  const toggleMyList = (m) => {
-    setMyList((prev) => {
-      const exists = prev.some((x) => String(x?.id) === String(m.id));
-      const next = exists ? prev.filter((x) => String(x?.id) !== String(m.id)) : [...prev, m];
-      localStorage.setItem("myList", JSON.stringify(next));
-      return next;
-    });
   };
 
-  // kalau list berubah dari tab lain (optional)
-  useEffect(() => {
-    const onStorage = () => {
-      try {
-        setMyList(JSON.parse(localStorage.getItem("myList") || "[]"));
-      } catch {}
-    };
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
-  }, []);
+  if (loading) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#0b0f10",
+          color: "#fff",
+          padding: 24,
+        }}
+      >
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
 
-  // ✅ kalau item gak ketemu (misal URL dibuka manual)
   if (!movie) {
     return (
-      <div style={{ minHeight: "100vh", background: "#0b0f10", color: "#fff", padding: 24 }}>
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "#0b0f10",
+          color: "#fff",
+          padding: 24,
+        }}
+      >
         <h2>Film/Series tidak ditemukan</h2>
         <button
           type="button"
@@ -75,20 +92,30 @@ export default function Detail() {
     >
       <div className="detailModal" onClick={(e) => e.stopPropagation()}>
         <div className="detailTopActions">
-          {/* ✅ back (kalau kamu nanti bikin tab lain) */}
+
           {!showEpisodes ? (
-            <button className="detailBack" type="button" onClick={() => setShowEpisodes(true)}>
+            <button
+              className="detailBack"
+              type="button"
+              onClick={() => setShowEpisodes(true)}
+            >
               ←
             </button>
           ) : null}
 
-          <button className="detailClose" type="button" onClick={() => navigate("/daftar-saya")}>
+          <button
+            className="detailClose"
+            type="button"
+            onClick={() => navigate("/daftar-saya")}
+          >
             ✕
           </button>
         </div>
 
-        {/* HERO */}
-        <div className="detailHero" style={{ backgroundImage: `url(${movie.img || movie.posterImg})` }}>
+        <div
+          className="detailHero"
+          style={{ backgroundImage: `url(${movie.img || movie.posterImg})` }}
+        >
           <div className="detailHeroFade" />
 
           <div className="detailHeroContent">
@@ -99,15 +126,15 @@ export default function Detail() {
                 Mulai
               </button>
 
-              {/* ✅ tombol + (masuk/keluar daftar saya) */}
+
               <button
-                className={`detailCircleBtn ${isInMyList(movie.id) ? "isActive" : ""}`}
+                className="detailCircleBtn isActive"
                 type="button"
-                onClick={() => toggleMyList(movie)}
-                aria-label="Add to My List"
-                title="Daftar Saya"
+                onClick={handleRemoveFromMyList}
+                aria-label="Hapus dari Daftar Saya"
+                title="Hapus dari Daftar Saya"
               >
-                {isInMyList(movie.id) ? "✓" : "+"}
+                ✓
               </button>
 
               <button
@@ -151,7 +178,7 @@ export default function Detail() {
           </div>
         </div>
 
-        {/* ✅ BAGIAN BAWAH: EPISODE (bukan rekomendasi) */}
+
         <div className="detailBody">
           <div className="detailSectionTitle">Episode</div>
 

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./daftarSaya.css";
+import { myListService } from "../services/api/myList.service";
 
 import logo from "../assets/brand/logo.png";
 import avatar from "../assets/brand/avatar.png";
@@ -14,12 +15,17 @@ export default function DaftarSaya() {
   const [showEpisodes, setShowEpisodes] = useState(false);
 
   useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem("myList") || "[]");
-      setItems(Array.isArray(saved) ? saved : []);
-    } catch {
-      setItems([]);
-    }
+    const run = async () => {
+      try {
+        const data = await myListService.getAll();
+        setItems(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error(error);
+        setItems([]);
+      }
+    };
+
+    run();
   }, []);
 
 
@@ -33,7 +39,7 @@ export default function DaftarSaya() {
     });
   }, [items]);
 
-  // ===== helpers biar movie/series kebaca bener dari localStorage =====
+  // ===== helpers biar movie/series kebaca bener dari API =====
 
   const isSeries = (m) =>
     m?.kind === "series" || (Array.isArray(m?.episodesList) && m.episodesList.length > 0);
@@ -113,21 +119,61 @@ export default function DaftarSaya() {
   };
 
   // ===== daftar saya toggle (hapus/tambah) =====
-  const isInMyList = (id) => items.some((x) => String(x?.id) === String(id));
-
-  const toggleMyList = (movie) => {
+  const isInMyList = (id) =>
+    items.some((x) => String(x?.movieId ?? x?.id) === String(id));
+  const toggleMyList = async (movie) => {
     const fixed = normalizeMovie(movie);
 
+    try {
+      const existingItem = items.find(
+        (x) => String(x?.movieId ?? x?.id) === String(fixed.movieId ?? fixed.id)
+      );
 
-    setItems((prev) => {
-      const exists = prev.some((x) => String(x?.id) === String(fixed.id));
-      const next = exists
-        ? prev.filter((x) => String(x?.id) !== String(fixed.id))
-        : [...prev, fixed];
+      if (existingItem) {
+        await myListService.remove(existingItem.id);
+        setItems((prev) =>
+          prev.filter((x) => String(x.id) !== String(existingItem.id))
+        );
 
-      localStorage.setItem("myList", JSON.stringify(next));
-      return next;
-    });
+        if (activeMovie && String(activeMovie.id) === String(movie.id)) {
+          setActiveMovie(null);
+          setShowEpisodes(false);
+        }
+        return;
+      }
+
+      const created = await myListService.add({
+        ...fixed,
+        movieId: fixed.movieId ?? fixed.id,
+        watched: fixed.watched ?? false,
+      });
+
+      setItems((prev) => [...prev, created]);
+    } catch (error) {
+      console.error(error);
+      alert("Gagal update Daftar Saya");
+    }
+  };
+
+  const handleToggleWatched = async (movie) => {
+    try {
+      const updated = await myListService.update(movie.id, {
+        watched: !movie.watched,
+      });
+
+      setItems((prev) =>
+        prev.map((item) =>
+          String(item.id) === String(movie.id) ? { ...item, ...updated } : item
+        )
+      );
+
+      if (activeMovie && String(activeMovie.id) === String(movie.id)) {
+        setActiveMovie((prev) => ({ ...prev, ...updated }));
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Gagal update status film");
+    }
   };
 
   const openDetail = (m) => {
@@ -300,6 +346,15 @@ export default function DaftarSaya() {
                       title={isInMyList(activeMovie.id) ? "Hapus dari Daftar Saya" : "Tambah ke Daftar Saya"}
                     >
                       {isInMyList(activeMovie.id) ? "✓" : "+"}
+                    </button>
+
+                    <button
+                      type="button"
+                      className="detailCircleBtn"
+                      onClick={() => handleToggleWatched(activeMovie)}
+                      title={activeMovie?.watched ? "Sudah Ditonton" : "Tandai Ditonton"}
+                    >
+                      {activeMovie?.watched ? "👁" : "✔"}
                     </button>
                   </div>
                 </div>
