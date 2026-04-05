@@ -1,8 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { moviesService } from "../services/api/movies.service";
 import { myListService } from "../services/api/myList.service";
+import {
+  setMovies,
+  setMyList,
+  addToMyList,
+  removeFromMyList,
+} from "../store/redux/movieSlice";
 
 // BRAND
 import logo from "../assets/brand/logo.png";
@@ -105,6 +112,9 @@ function Row({ title, items, variant, onSelect }) {
 }
 
 export default function Home() {
+  const dispatch = useDispatch();
+  const apiMovies = useSelector((state) => state.movie.movies);
+  const myList = useSelector((state) => state.movie.myList);
   const [openMenu, setOpenMenu] = useState(false);
 
   const [muted, setMuted] = useState(true);
@@ -114,7 +124,7 @@ export default function Home() {
   const [showEpisodes, setShowEpisodes] = useState(false);
 
   // ✅ Daftar Saya dari mockapi
-  const [myList, setMyList] = useState([]);
+
   const [myListLoading, setMyListLoading] = useState(true);
   const [myListError, setMyListError] = useState("");
 
@@ -124,7 +134,7 @@ export default function Home() {
         setMyListLoading(true);
         setMyListError("");
         const data = await myListService.getAll();
-        setMyList(Array.isArray(data) ? data : []);
+        dispatch(setMyList(Array.isArray(data) ? data : []));
       } catch (e) {
         console.error(e);
         setMyListError("Gagal ambil data daftar saya");
@@ -137,7 +147,6 @@ export default function Home() {
   }, []);
 
   // ✅✅✅ TEMPEL BLOK INI DI SINI (SETELAH myList, SEBELUM navigate)
-  const [apiMovies, setApiMovies] = useState([]);
   const [apiLoading, setApiLoading] = useState(true);
   const [apiError, setApiError] = useState("");
 
@@ -147,7 +156,7 @@ export default function Home() {
         setApiLoading(true);
         setApiError("");
         const data = await moviesService.getAll();
-        setApiMovies(Array.isArray(data) ? data : []);
+        dispatch(setMovies(Array.isArray(data) ? data : []));
       } catch (e) {
         console.error(e);
         setApiError("Gagal ambil data movies dari API");
@@ -156,7 +165,7 @@ export default function Home() {
       }
     };
     run();
-  }, []);
+  }, [dispatch]);
 
   const posterByCode = {
     tmw: pTomorrow,
@@ -267,9 +276,7 @@ export default function Home() {
 
       if (existingItem) {
         await myListService.remove(existingItem.id);
-        setMyList((prev) =>
-          prev.filter((x) => String(x.id) !== String(existingItem.id))
-        );
+        dispatch(removeFromMyList(existingItem.id));
         return;
       }
 
@@ -295,7 +302,7 @@ export default function Home() {
       };
 
       const created = await myListService.add(payload);
-      setMyList((prev) => [...prev, created]);
+      dispatch(addToMyList(created));
     } catch (error) {
       console.error(error);
       alert("Gagal update Daftar Saya");

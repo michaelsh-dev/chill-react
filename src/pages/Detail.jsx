@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { myListService } from "../services/api/myList.service";
+import { removeFromMyList } from "../store/redux/movieSlice";
 
 export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.movie.myList);
 
   const [muted, setMuted] = useState(true);
   const [showEpisodes, setShowEpisodes] = useState(true);
@@ -12,26 +16,16 @@ export default function Detail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const run = async () => {
-      try {
-        setLoading(true);
-        const data = await myListService.getAll();
-        const found = data.find((m) => String(m?.id) === String(id));
-        setMovie(found || null);
-      } catch (error) {
-        console.error(error);
-        setMovie(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    run();
-  }, [id]);
+  setLoading(true);
+  const found = items.find((m) => String(m?.id) === String(id));
+  setMovie(found || null);
+  setLoading(false);
+}, [id, items]);
 
   const handleRemoveFromMyList = async () => {
     try {
       await myListService.remove(movie.id);
+      dispatch(removeFromMyList(movie.id));
       navigate("/daftar-saya");
     } catch (error) {
       console.error(error);

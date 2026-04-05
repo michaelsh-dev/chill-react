@@ -1,16 +1,24 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import "./daftarSaya.css";
 import { myListService } from "../services/api/myList.service";
+import {
+  setMyList,
+  addToMyList,
+  removeFromMyList,
+  updateMyList,
+} from "../store/redux/movieSlice";
 
 import logo from "../assets/brand/logo.png";
 import avatar from "../assets/brand/avatar.png";
 
 export default function DaftarSaya() {
+  const dispatch = useDispatch();
+  const items = useSelector((state) => state.movie.myList);
+
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
-
-  const [items, setItems] = useState([]);
   const [activeMovie, setActiveMovie] = useState(null);
   const [showEpisodes, setShowEpisodes] = useState(false);
 
@@ -18,15 +26,15 @@ export default function DaftarSaya() {
     const run = async () => {
       try {
         const data = await myListService.getAll();
-        setItems(Array.isArray(data) ? data : []);
+        dispatch(setMyList(Array.isArray(data) ? data : []));
       } catch (error) {
         console.error(error);
-        setItems([]);
+        dispatch(setMyList([]));
       }
     };
 
     run();
-  }, []);
+  }, [dispatch]);
 
 
   const gridItems = useMemo(() => {
@@ -131,9 +139,7 @@ export default function DaftarSaya() {
 
       if (existingItem) {
         await myListService.remove(existingItem.id);
-        setItems((prev) =>
-          prev.filter((x) => String(x.id) !== String(existingItem.id))
-        );
+        dispatch(removeFromMyList(existingItem.id));
 
         if (activeMovie && String(activeMovie.id) === String(movie.id)) {
           setActiveMovie(null);
@@ -148,7 +154,7 @@ export default function DaftarSaya() {
         watched: fixed.watched ?? false,
       });
 
-      setItems((prev) => [...prev, created]);
+      dispatch(addToMyList(created));
     } catch (error) {
       console.error(error);
       alert("Gagal update Daftar Saya");
@@ -161,10 +167,11 @@ export default function DaftarSaya() {
         watched: !movie.watched,
       });
 
-      setItems((prev) =>
-        prev.map((item) =>
-          String(item.id) === String(movie.id) ? { ...item, ...updated } : item
-        )
+      dispatch(
+        updateMyList({
+          ...movie,
+          ...updated,
+        })
       );
 
       if (activeMovie && String(activeMovie.id) === String(movie.id)) {
